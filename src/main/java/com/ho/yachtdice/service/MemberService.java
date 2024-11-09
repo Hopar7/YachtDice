@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+//이건 데이터 베이스에 접근하는 서비스
 
 @Service
 @RequiredArgsConstructor
