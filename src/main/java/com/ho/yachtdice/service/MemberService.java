@@ -1,11 +1,14 @@
 package com.ho.yachtdice.service;
 
+import com.ho.yachtdice.DTO.RankingResponse;
 import com.ho.yachtdice.entity.Member;
 import com.ho.yachtdice.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 //이건 데이터 베이스에 접근하는 서비스
 
 @Service
@@ -32,5 +35,20 @@ public class MemberService {
             throw new RuntimeException("Invalid credentials");
         }
         return member.getName();
+    }
+    public void update(String name,int score)
+    {
+        Member member = memberRepository.findByName(name)
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        member.updateScore(score);
+        memberRepository.save(member);
+
+    }
+
+    public List<RankingResponse> topten()
+    {
+        return memberRepository.findTop10ByOrderByScoreDesc().stream()
+                .map(member -> new RankingResponse(member.getName(), member.getScore()))
+                .collect(Collectors.toList());
     }
 }
